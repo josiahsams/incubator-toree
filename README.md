@@ -17,6 +17,35 @@
     under the License.
 -->
 
+### JOE notes:
+
+Follow the steps to install toree (Spark - Scala Kernel for Jupyter notebook) in a ppcle64 machine without `docker`,
+
+ ```
+git clone https://github.com/josiahsams/incubator-toree.git
+cd incubator-toree/
+
+
+# Compile the scala code using sbt & create a pip package.
+export PATH=$PATH:~/sbt/bin
+make dist
+make pip-release
+
+# Install it in the Anaconda environment.
+cd dist/toree-pip/
+python setup.py sdist
+cd dist
+pip install toree-0.4.0.dev1.tar.gz
+jupyter toree install --sys-prefix
+
+# List installed kernel.
+jupyter kernelspec list
+
+# Uninstall installed kernel.
+jupyter kernelspec uninstall  apache_toree_scala
+```
+
+
 [![Build Status][build-badge]][build-url]
 [![License][license-badge]][license-url]
 [![Join the chat at https://gitter.im/apache/toree][gitter-badge]][gitter-url]
@@ -47,6 +76,7 @@ Develop
 This project uses `make` as the entry point for build, test, and packaging. It supports 2 modes, local and vagrant. The default is local and all command (i.e. sbt) will be ran locally on your machine. This means that you need to
 install `sbt`, `jupyter/ipython`, and other development requirements locally on your machine. The 2nd mode uses [Vagrant][vagrant] to simplify the development experience. In vagrant mode, all commands are sent to the vagrant box
 that has all necessary dependencies pre-installed. To run in vagrant mode, run `export USE_VAGRANT=true`.  
+
 
 To build and interact with Toree using Jupyter, run
 ```
